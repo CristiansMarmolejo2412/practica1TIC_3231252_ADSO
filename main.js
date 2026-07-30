@@ -82,7 +82,8 @@ function PCPlays() {
 function PCPlaysV2() {
   debugger;
   console.log("PC Plays...V2 ");
-  //create three
+
+  // Crea una copia del tablero para generar el árbol de decisiones.
   const copy = JSON.parse(JSON.stringify(board));
   const root = new Node(copy);
   processNode(root, true, 0);
@@ -90,21 +91,30 @@ function PCPlaysV2() {
   console.log("final", root);
 
   if (pcSolutions.length > 0) {
+
     let min = 100;
+
     for (let i = 0; i < pcSolutions.length; i++) {
       if (pcSolutions[i].level < min) {
         min = pcSolutions[i].level;
       }
     }
+
     pcSolutions = pcSolutions.filter((sol) => sol.level === min);
-    const moveIndex = parseInt(Math.random() * (pcSolutions.length - 0) + 0);
+
+    const moveIndex = parseInt(Math.random() * pcSolutions.length);
     console.log({ pcSolutions, moveIndex });
+
     const move = getRoot(pcSolutions[moveIndex]);
     console.log({ move });
+
     decisionThree = move;
     board = JSON.parse(JSON.stringify(move.value));
+
     console.log({ board });
+
     turn = 0;
+
     renderBoard();
     renderPlayer();
 
@@ -113,16 +123,27 @@ function PCPlaysV2() {
 
     // Si existe un ganador, finaliza la partida.
     if (won !== "none") {
-        gameOver = true;
-        return;
+      gameOver = true;
+      return;
     }
 
     // Si la partida continúa, limpia las soluciones y devuelve el turno al jugador.
     pcSolutions = [];
     playerPlays();
-    
+
   } else {
-    console.log("Empate...");
+
+    // Verifica si el tablero está completamente lleno.
+    if (checkIfDraw()) {
+
+      console.log("Empate");
+
+      // Finaliza la partida.
+      gameOver = true;
+
+      return;
+    }
+
   }
 }
 
@@ -174,33 +195,34 @@ function playerPlays() {
 
     buttonCell.onclick = () => {
 
-      // Si la partida terminó, no hace nada.
+      // Si la partida terminó, no permite realizar más movimientos.
       if (gameOver) return;
 
+      // Si no es el turno del jugador, ignora el clic.
+      if (turn !== 0) return;
+
       // Si la casilla ya está ocupada, no permite volver a jugarla.
-      if (board[fila][columna] !== "") {
-        return;
-      }
+      if (board[fila][columna] !== "") return;
 
       // Guarda la jugada del jugador.
       board[fila][columna] = "O";
 
-      // Actualiza la casilla en pantalla.
+      // Actualiza la interfaz.
       buttonCell.textContent = "O";
 
       // Cambia el turno a la computadora.
       turn = 1;
 
-      // Comprueba si existe un ganador.
+      // Verifica si existe un ganador.
       const won = checkIfWinner();
 
-      // Si alguien ganó, termina la partida.
+      // Si alguien ganó, finaliza la partida.
       if (won !== "none") {
         gameOver = true;
         return;
       }
 
-      // Turno de la computadora.
+      // Juega la computadora.
       PCPlaysV2();
 
     };
@@ -220,6 +242,7 @@ function checkIfWinner() {
     board[1][0] === "X" && board[1][1] === "X" && board[1][2] === "X",
     board[2][0] === "X" && board[2][1] === "X" && board[2][2] === "X",
   ];
+
   const playerWon = [
     board[0][0] === "O" && board[1][1] === "O" && board[2][2] === "O",
     board[2][0] === "O" && board[1][1] === "O" && board[0][2] === "O",
@@ -235,11 +258,35 @@ function checkIfWinner() {
     console.log("PC WON");
     return "pcwon";
   }
+
   if (playerWon.includes(true)) {
     console.log("Player WON");
     return "playerwon";
   }
+
   return "none";
+}
+
+// =========================
+// NUEVA FUNCIÓN
+// =========================
+
+// Verifica si el tablero está completamente lleno.
+function checkIfDraw() {
+
+  for (let i = 0; i < board.length; i++) {
+
+    for (let j = 0; j < board[i].length; j++) {
+
+      if (board[i][j] === "") {
+        return false;
+      }
+
+    }
+
+  }
+
+  return true;
 }
 function checkIfPCWinner(arr) {
   const PCWon = [
