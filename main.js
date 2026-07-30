@@ -33,6 +33,9 @@ function renderBoard() {
 
 startGame();
 
+// Limpia el mensaje de la partida anterior.
+document.querySelector("#message").textContent = "";
+
 function startGame() {
 
   // Reinicia el tablero vacío.
@@ -239,6 +242,7 @@ function playerPlays() {
 }
 
 function checkIfWinner() {
+
   const PCWon = [
     board[0][0] === "X" && board[1][1] === "X" && board[2][2] === "X",
     board[2][0] === "X" && board[1][1] === "X" && board[0][2] === "X",
@@ -262,12 +266,24 @@ function checkIfWinner() {
   ];
 
   if (PCWon.includes(true)) {
+
     console.log("PC WON");
+
+    // Muestra el ganador en pantalla.
+    document.querySelector("#message").textContent =
+      "🏆 Ganó el Jugador 2 (X)";
+
     return "pcwon";
   }
 
   if (playerWon.includes(true)) {
+
     console.log("Player WON");
+
+    // Muestra el ganador en pantalla.
+    document.querySelector("#message").textContent =
+      "🏆 Ganó el Jugador 1 (O)";
+
     return "playerwon";
   }
 
