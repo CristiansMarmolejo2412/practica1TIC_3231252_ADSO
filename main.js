@@ -131,21 +131,32 @@ function playerPlays() {
   console.log("player plays");
 
   document.querySelectorAll(".cell").forEach((buttonCell, i) => {
-    const row = i % 3;
-    const column = parseInt(i / 3);
-    if (board[column][row] === "") {
-      buttonCell.addEventListener("click", (e) => {
-        board[column][row] = "O";
-        buttonCell.textContent = board[column][row];
+
+    // Calculamos correctamente la fila y la columna
+    const fila = Math.floor(i / 3);
+    const columna = i % 3;
+
+    if (board[fila][columna] === "") {
+
+      buttonCell.addEventListener("click", () => {
+
+        board[fila][columna] = "O";
+        buttonCell.textContent = board[fila][columna];
+
         turn = 1;
+
         const won = checkIfWinner();
-        debugger;
+
         if (won === "none") {
           PCPlaysV2();
         }
+
       });
+
     }
+
   });
+
 }
 
 function checkIfWinner() {
