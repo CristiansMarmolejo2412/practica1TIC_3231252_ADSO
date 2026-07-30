@@ -16,6 +16,9 @@ let board = [
 ];
 
 let turn = 0; //0 user, 1 = pc
+// Indica si la partida ya terminó.
+// Si es true, ningún jugador podrá seguir realizando movimientos.
+let gameOver = false;
 
 function renderBoard() {
   const html = board.map((row) => {
@@ -31,8 +34,14 @@ function renderBoard() {
 startGame();
 
 function startGame() {
+
+  // Reinicia el estado del juego para permitir una nueva partida
+  gameOver = false;
+
   renderBoard();
+
   turn = Math.random() <= 0.5 ? 0 : 1;
+
   renderPlayer();
 
   if (turn === 0) {
@@ -80,11 +89,20 @@ function PCPlaysV2() {
     turn = 0;
     renderBoard();
     renderPlayer();
+
+    // Verifica si la computadora ganó después de realizar su movimiento.
     const won = checkIfWinner();
-    if (won === "none") {
-      pcSolutions = [];
-      playerPlays();
+
+    // Si existe un ganador, finaliza la partida.
+    if (won !== "none") {
+        gameOver = true;
+        return;
     }
+
+    // Si la partida continúa, limpia las soluciones y devuelve el turno al jugador.
+    pcSolutions = [];
+    playerPlays();
+    
   } else {
     console.log("Empate...");
   }
@@ -139,6 +157,8 @@ function playerPlays() {
     if (board[fila][columna] === "") {
 
       buttonCell.addEventListener("click", () => {
+        // Si la partida terminó, no permite realizar más movimientos.
+        if (gameOver) return;
 
         board[fila][columna] = "O";
         buttonCell.textContent = board[fila][columna];
@@ -147,9 +167,14 @@ function playerPlays() {
 
         const won = checkIfWinner();
 
-        if (won === "none") {
-          PCPlaysV2();
+        // Si alguien ganó, finaliza la partida.
+        if (won !=="none"){
+          gameOver = true;
+          return;
         }
+
+        //Si nadie ha ganado, juega la computadora.
+        PCPlaysV2();
 
       });
 
