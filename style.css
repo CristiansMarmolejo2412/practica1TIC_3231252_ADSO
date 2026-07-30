@@ -1,18 +1,113 @@
+/* ==========================================
+   ESTILOS GENERALES Y COLORES
+   ========================================== */
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: #1e1e2e; /* Fondo oscuro elegante */
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
 }
 
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  background-color: #2b2b3d;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Textos de información */
+#player {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #a6adc8;
+}
+
+#message {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #f9e2af;
+  min-height: 2rem;
+}
+
+/* ==========================================
+   TABLERO Y CASILLAS
+   ========================================== */
 .board {
   display: flex;
   flex-direction: column;
+  gap: 10px;
 }
+
 .row {
   display: flex;
+  gap: 10px;
 }
+
 .cell {
-  width: 100px;
-  height: 100px;
-  border: solid 1px black;
-  font-size: 38px;
+  width: 90px;
+  height: 90px;
+  background-color: #313244;
+  border: 2px solid #45475a;
+  border-radius: 12px;
+  font-size: 40px;
   font-weight: bold;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* Transición para suavizar el mouse arriba */
+  transition: transform 0.2s, background-color 0.2s, border-color 0.2s;
+}
+
+/* Animación al pasar el mouse */
+.cell:hover {
+  background-color: #45475a;
+  transform: scale(1.05);
+}
+
+/* Animación al hacer clic */
+.cell:active {
+  transform: scale(0.95);
+}
+
+/* ==========================================
+   COLORES Y ANIMACIÓN PARA X y O
+   ========================================== */
+
+/* Colores específicos según la jugada */
+.cell-x {
+  color: #89b4fa; /* Azul para X */
+}
+
+.cell-o {
+  color: #f38ba8; /* Rosa para O */
+}
+
+/* Animación cuando aparece el símbolo (pop-in) */
+.cell-pop {
+  animation: pop 0.25s ease-out;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  80% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
