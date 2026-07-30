@@ -35,20 +35,38 @@ startGame();
 
 function startGame() {
 
-  // Reinicia el estado del juego para permitir una nueva partida
+  // Reinicia el tablero vacío.
+  board = [
+    ["", "", ""],
+    ["", "", ""],
+    ["", "", ""],
+  ];
+
+  // Reinicia el árbol de decisiones de la computadora.
+  decisionThree = null;
+
+  // Vacía las soluciones encontradas por la IA.
+  pcSolutions = [];
+
+  // Indica que la partida vuelve a estar activa.
   gameOver = false;
 
-  renderBoard();
-
+  // Define aleatoriamente quién inicia.
   turn = Math.random() <= 0.5 ? 0 : 1;
 
+  // Dibuja nuevamente el tablero.
+  renderBoard();
+
+  // Actualiza el turno en pantalla.
   renderPlayer();
 
+  // Inicia el turno correspondiente.
   if (turn === 0) {
     playerPlays();
   } else {
     PCPlaysV2();
   }
+
 }
 
 function renderPlayer() {
