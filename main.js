@@ -70,9 +70,11 @@ function startGame() {
 }
 
 function renderPlayer() {
-  document.querySelector("#player").textContent = `${
-    turn === 0 ? "Player turn" : "PC turn"
-  }`;
+
+  // Muestra en pantalla el turno del jugador correspondiente.
+  document.querySelector("#player").textContent =
+    turn === 0 ? "Turno del Jugador 1 (O)" : "Turno del Jugador 2 (X)";
+
 }
 
 function PCPlays() {
@@ -207,11 +209,14 @@ function playerPlays() {
       // Guarda la jugada del jugador.
       board[fila][columna] = "O";
 
-      // Actualiza la interfaz.
+      // Actualiza la casilla en pantalla.
       buttonCell.textContent = "O";
 
       // Cambia el turno a la computadora.
       turn = 1;
+
+      // Actualiza el texto del turno.
+      renderPlayer();
 
       // Verifica si existe un ganador.
       const won = checkIfWinner();
@@ -222,8 +227,10 @@ function playerPlays() {
         return;
       }
 
-      // Juega la computadora.
-      PCPlaysV2();
+      // Espera medio segundo antes de que juegue la computadora.
+      setTimeout(() => {
+        PCPlaysV2();
+      }, 500);
 
     };
 
