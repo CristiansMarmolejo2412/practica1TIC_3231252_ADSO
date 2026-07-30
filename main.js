@@ -168,35 +168,42 @@ function playerPlays() {
 
   document.querySelectorAll(".cell").forEach((buttonCell, i) => {
 
-    // Calculamos correctamente la fila y la columna
+    // Calcula la fila y la columna correspondientes.
     const fila = Math.floor(i / 3);
     const columna = i % 3;
 
-    if (board[fila][columna] === "") {
+    buttonCell.onclick = () => {
 
-      buttonCell.addEventListener("click", () => {
-        // Si la partida terminó, no permite realizar más movimientos.
-        if (gameOver) return;
+      // Si la partida terminó, no hace nada.
+      if (gameOver) return;
 
-        board[fila][columna] = "O";
-        buttonCell.textContent = board[fila][columna];
+      // Si la casilla ya está ocupada, no permite volver a jugarla.
+      if (board[fila][columna] !== "") {
+        return;
+      }
 
-        turn = 1;
+      // Guarda la jugada del jugador.
+      board[fila][columna] = "O";
 
-        const won = checkIfWinner();
+      // Actualiza la casilla en pantalla.
+      buttonCell.textContent = "O";
 
-        // Si alguien ganó, finaliza la partida.
-        if (won !=="none"){
-          gameOver = true;
-          return;
-        }
+      // Cambia el turno a la computadora.
+      turn = 1;
 
-        //Si nadie ha ganado, juega la computadora.
-        PCPlaysV2();
+      // Comprueba si existe un ganador.
+      const won = checkIfWinner();
 
-      });
+      // Si alguien ganó, termina la partida.
+      if (won !== "none") {
+        gameOver = true;
+        return;
+      }
 
-    }
+      // Turno de la computadora.
+      PCPlaysV2();
+
+    };
 
   });
 
